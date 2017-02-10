@@ -1,8 +1,12 @@
 
 function getStats(txt) {
 
+  // parameters: text input
+  // returns: 
+  // • if there is no text, return emptyStats
+  // • otherwise return false
   function txtEmpty(txt) {
-    if (txt == "") {
+    if (txt === "") {
       return emptyStats(txt);
     }
     else {
@@ -10,6 +14,8 @@ function getStats(txt) {
     }
   }
 
+  // parameters: (empty) text input
+  // returns: 0, none
   function emptyStats(txt) {
     return {
       nChars: 0,
@@ -24,29 +30,48 @@ function getStats(txt) {
     };
   }
 
+  // parameters: text input
+  // returns: integer
+  // • counts the number of characters, whitespace inclusive 
   function get_nChars(txt) {
     let nChars = txt.length;
     return nChars;
   }
 
+  // parameters: text input
+  // returns: integer
+  // • counts the number of words (alphanumeric only)
+  // • an alert is issued if the text input contains only non-word characters
   function get_nWords(txt) {
-    let nWords = txt.split(/\s+/);
-    nWords = nWords.length;
-    return nWords;
+    try {
+      let nWords = txt.replace(/[^A-Za-z0-9 ]/g, '').match(/\w+/g).length;
+      return nWords;
+    }
+    catch(err) {
+      alert("nWords returned zero because text input is exclusively whitespace or symbols.");
+      console.log(err);
+      return nWords = 0;
+    }
   }
-  
+ 
+  // parameters: text input
+  // returns: integer
+  // • counts the number of lines
+  // • 0 if text is empty
   function get_nLines(txt) {
-    let nLines = txt.split("\n");
-    nLines = nLines.length;
+    let nLines = txt.split("\n").length;
     return nLines;
   }
 
+  // parameters: text input
+  // returns: integer
+  // • counts the number of lines containing at least 1 non-whitespace character
   function get_nNonEmptyLines(txt) {
-    let nLines = txt.split("\n");
+    var nLines = txt.split("\n");
     var nNonEmptyLines = 0;
 
     for (i = 0; i < nLines.length; i++) {
-      let lineArray = nLines[i].replace(/\s+/,"");
+      let lineArray = nLines[i].replace(/\s+/, '');
       if (lineArray.length != 0) {
         nNonEmptyLines++;
       }
@@ -55,26 +80,27 @@ function getStats(txt) {
     return nNonEmptyLines;
   }
 
+  // parameters: text input
+  // returns: float 
+  // calculates the average word length (alphanumeric only)
   function get_averageWordLength(txt) {
-    var wordArray = txt.replace(/[^A-Za-z0-9 ]/g, '');
-    console.log(wordArray);
-    wordArray = wordArray.split(/\s+/);
-    console.log(wordArray);
-    //wordArray = txt.replace(/^\W/, '');
+    var wordArray = txt.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/);
     let arrayLength = wordArray.length;
-    let wordLength = wordArray[0].length;
-    let averageWordLength = 0;
+    var averageWordLength = 0;
 
     for (i = 0; i < wordArray.length; i++) {
-      console.log(wordArray[i]);
       averageWordLength += wordArray[i].length;
     }
+
     averageWordLength /= arrayLength;
     return averageWordLength;
   }
 
+  // parameters: text input
+  // returns: integer
+  // counts the length of the longest line in the text input
   function get_maxLineLength(txt) {
-    let lineArray = txt.split("\n");
+    var lineArray = txt.split("\n");
     var maxLineLength = lineArray[0].length;
     
     for (i = 0; i < lineArray.length; i++) {
@@ -85,12 +111,68 @@ function getStats(txt) {
     return maxLineLength;
   }
 
+  // parameters: text input
+  // returns: array of strings
+  // • finds all palindromes within the text input
+  // • palindromes are of length > 2
+  function get_palindromes(txt) {
+    var palindromes= [];
+    var revWordArray = [];
+    var wordArray = txt.replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/);
+    
+    for (i = 0; i < wordArray.length; i++) {
+      wordArray[i] = wordArray[i].toLowerCase();
+      // create reversed, lowercase array
+      revWordArray[i] = wordArray[i].split("").reverse().join("");
+      // compare array word with reversed word
+      if ((wordArray[i] === revWordArray[i]) && wordArray[i].length > 2) {
+        palindromes.push(wordArray[i]);
+      }
+    }
+    return palindromes;
+  }
+
+  // parameters: text input
+  // returns: an array of strings
+  // • finds the 10 longest words, and sorts in descending order
+  // • note that words of equal length are sorted alphabetically
+  function get_longestWords(txt) {
+    var uniqueWordArray = [];
+    var wordArray = txt.trim().split(/\s+/);
+
+    for (i = 0; i < wordArray.length; i++) {
+      wordArray[i] = wordArray[i].toLowerCase();
+      wordArray[i] = wordArray[i].replace(/[^A-Za-z0-9 ]/g,'');
+      // if uniqueWordArray does not have the wordArray[i] element, push onto unique array 
+      if (uniqueWordArray.indexOf(wordArray[i]) === -1) {
+        uniqueWordArray.push(wordArray[i]);
+      }
+    }
+
+    // tip: see javascript sort/compare methods documentation
+    uniqueWordArray.sort(function(x, y) {
+      // alphabetize words of equal length
+      if (y.length == x.length) {
+        return y.length - x.length || x.localeCompare(y);
+      }
+      // otherwise, sort accordingly based on length (DESC)
+      else {
+        return y.length - x.length;
+      }
+    }); 
+    
+    return uniqueWordArray.slice(0,10);
+  }
+
+  // "main" begins here
+  // check if text field is completely empty 
   if (txtEmpty(txt)) {
     console.log(txtEmpty(txt));
     console.log(emptyStats(txt));
     return emptyStats(txt);
   }
 
+  // if non-empty text field, get & return statistics
   else {
     return {
       nChars: get_nChars(txt),
@@ -99,8 +181,8 @@ function getStats(txt) {
       nNonEmptyLines: get_nNonEmptyLines(txt),
       averageWordLength: get_averageWordLength(txt),
       maxLineLength: get_maxLineLength(txt),
-      palindromes: ["12321", "kayak", "mom"],
-      longestWords: ["xxxxxxxxx", "123444444"],
+      palindromes: get_palindromes(txt),
+      longestWords: get_longestWords(txt),
       mostFrequentWords: [ "hello(7)", "world(1)" ]
     };
   }
