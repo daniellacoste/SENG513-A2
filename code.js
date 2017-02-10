@@ -138,11 +138,10 @@ function getStats(txt) {
   // • note that words of equal length are sorted alphabetically
   function get_longestWords(txt) {
     var uniqueWordArray = [];
-    var wordArray = txt.trim().split(/\s+/);
+    var wordArray = txt.replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/);
 
     for (i = 0; i < wordArray.length; i++) {
       wordArray[i] = wordArray[i].toLowerCase();
-      wordArray[i] = wordArray[i].replace(/[^A-Za-z0-9 ]/g,'');
       // if uniqueWordArray does not have the wordArray[i] element, push onto unique array 
       if (uniqueWordArray.indexOf(wordArray[i]) === -1) {
         uniqueWordArray.push(wordArray[i]);
