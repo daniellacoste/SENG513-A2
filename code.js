@@ -15,7 +15,7 @@ function getStats(txt) {
   }
 
   // parameters: (empty) text input
-  // returns: 0, none
+  // returns: 0 and empty arrays
   function emptyStats(txt) {
     return {
       nChars: 0,
@@ -24,9 +24,9 @@ function getStats(txt) {
       nNonEmptyLines: 0,
       averageWordLength: 0,
       maxLineLength: 0,
-      palindromes: ["none"],
-      longestWords: ["none"],
-      mostFrequentWords: ["none"]
+      palindromes: [],
+      longestWords: [],
+      mostFrequentWords: []
     };
   }
 
@@ -40,18 +40,10 @@ function getStats(txt) {
 
   // parameters: text input
   // returns: integer
-  // • counts the number of words (alphanumeric only)
-  // • an alert is issued if the text input contains only non-word characters
+  // • counts the number of words (alphanumerics only)
   function get_nWords(txt) {
-    try {
-      let nWords = txt.replace(/[^A-Za-z0-9 ]/g, '').match(/\w+/g).length;
+      var nWords = txt.replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/).length;
       return nWords;
-    }
-    catch(err) {
-      alert("nWords returned zero because text input is exclusively whitespace or symbols.");
-      console.log(err);
-      return nWords = 0;
-    }
   }
  
   // parameters: text input
@@ -81,22 +73,6 @@ function getStats(txt) {
   }
 
   // parameters: text input
-  // returns: float 
-  // calculates the average word length (alphanumeric only)
-  function get_averageWordLength(txt) {
-    var wordArray = txt.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/);
-    let arrayLength = wordArray.length;
-    var averageWordLength = 0;
-
-    for (i = 0; i < wordArray.length; i++) {
-      averageWordLength += wordArray[i].length;
-    }
-
-    averageWordLength /= arrayLength;
-    return averageWordLength;
-  }
-
-  // parameters: text input
   // returns: integer
   // counts the length of the longest line in the text input
   function get_maxLineLength(txt) {
@@ -109,6 +85,22 @@ function getStats(txt) {
       }
     }
     return maxLineLength;
+  }
+
+  // parameters: text input
+  // returns: float 
+  // calculates the average word length (alphanumeric only)
+  function get_averageWordLength(txt) {
+    var wordArray = txt.replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/);
+    let arrayLength = wordArray.length;
+    var averageWordLength = 0;
+
+    for (i = 0; i < wordArray.length; i++) {
+      averageWordLength += wordArray[i].length;
+    }
+
+    averageWordLength /= arrayLength;
+    return averageWordLength;
   }
 
   // parameters: text input
@@ -178,8 +170,8 @@ function getStats(txt) {
       nWords: get_nWords(txt),
       nLines: get_nLines(txt),
       nNonEmptyLines: get_nNonEmptyLines(txt),
-      averageWordLength: get_averageWordLength(txt),
       maxLineLength: get_maxLineLength(txt),
+      averageWordLength: get_averageWordLength(txt),
       palindromes: get_palindromes(txt),
       longestWords: get_longestWords(txt),
       mostFrequentWords: [ "hello(7)", "world(1)" ]
