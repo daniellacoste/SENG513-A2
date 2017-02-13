@@ -1,3 +1,8 @@
+// Daniel LaCoste
+// 10097915
+// ASSIGNMENT 2
+// SENG 513 W2017
+// Professor: P. Federl.
 
 function getStats(txt) {
 
@@ -68,7 +73,6 @@ function getStats(txt) {
         nNonEmptyLines++;
       }
     }
-
     return nNonEmptyLines;
   }
 
@@ -98,7 +102,6 @@ function getStats(txt) {
     for (i = 0; i < wordArray.length; i++) {
       averageWordLength += wordArray[i].length;
     }
-
     averageWordLength /= arrayLength;
     return averageWordLength;
   }
@@ -144,22 +147,59 @@ function getStats(txt) {
     uniqueWordArray.sort(function(x, y) {
       // alphabetize words of equal length
       if (y.length == x.length) {
-        return y.length - x.length || x.localeCompare(y);
+        return x.localeCompare(y);
       }
       // otherwise, sort accordingly based on length (DESC)
       else {
         return y.length - x.length;
       }
     }); 
-    
     return uniqueWordArray.slice(0,10);
   }
 
-  // "main" begins here
+  // parameters: text input
+  // returns: a multidimensional array
+  // • finds the top 10 most frequently used words
+  // • sorted lexicographically 
+  function get_mostFrequentWords(txt) {
+    var count = {}; 
+    var wordArray = txt.replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/);
+    var mostFrequentWordsArray= [];
+
+    // convert the elements of the array to lowercase
+    for (i = 0; i < wordArray.length; i++) {
+      wordArray[i] = wordArray[i].toLowerCase();
+    }
+
+    // increment a value for each key
+    // store key/values in the 'count' Object
+    // the value is incremented if the key already exists in the Object
+    wordArray.forEach(function(key) { 
+      count[key] = (count[key] || 0) + 1;
+    });
+
+    // convert the 'count' Object into an array for future sorting
+    for (let word in count) {
+      mostFrequentWordsArray.push([word, count[word]]);
+    }
+
+    // alphabetically sort the most frequent words
+    mostFrequentWordsArray.sort(function(x, y) {
+      // if the values are equivalent, sort them lexicographically
+      if (x[1] == y[1]) {
+        return x.toString().localeCompare(y);
+      }
+      // sort keys by DESC values
+      else {
+        return y[1] - x[1];
+      }
+    });
+    return mostFrequentWordsArray.slice(0,10);
+  }
+
+  // "main" javascript begins here
   // check if text field is completely empty 
   if (txtEmpty(txt)) {
-    console.log(txtEmpty(txt));
-    console.log(emptyStats(txt));
     return emptyStats(txt);
   }
 
@@ -174,7 +214,7 @@ function getStats(txt) {
       averageWordLength: get_averageWordLength(txt),
       palindromes: get_palindromes(txt),
       longestWords: get_longestWords(txt),
-      mostFrequentWords: [ "hello(7)", "world(1)" ]
+      mostFrequentWords: get_mostFrequentWords(txt)
     };
   }
 }
