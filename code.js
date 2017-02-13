@@ -194,6 +194,11 @@ function getStats(txt) {
         return y[1] - x[1];
       }
     });
+
+    mostFrequentWordsArray = mostFrequentWordsArray.map(function(val) {
+      return val[0] + '(' + val[1] + ')';
+    });
+
     return mostFrequentWordsArray.slice(0,10);
   }
 
