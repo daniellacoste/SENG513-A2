@@ -1,4 +1,3 @@
-# SENG 513 W17 Assignment 2
-Skeleton code.
+# SENG513-A2
+Assignment 2 JavaScript programming
 
-Put all your code into code.js.
