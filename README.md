@@ -1,4 +1,4 @@
-# JavaScript Practice
+# JavaScript TextStats
 The purpose of this assignment is to practice JavaScript programming.
 
 Within **code.js**, the function getStats(txt) reads textual input and computes statistical information for the given input. The results are as follows:
