@@ -1,8 +1,7 @@
 // Daniel LaCoste
-// 10097915
 // ASSIGNMENT 2
 // SENG 513 W2017
-// Professor: P. Federl.
+// Professor: P. Federl
 
 function getStats(txt) {
 
